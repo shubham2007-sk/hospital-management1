@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCore Hospital Management System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:wght@600;700&display=swap');
+        
+        :root {
+            --primary: #2D5F7E;
+            --primary-light: #4A8FB8;
+            --primary-dark: #1A3A4D;
+            --secondary: #7EBAA5;
+            --accent: #E8956F;
+            --success: #68B684;
+            --warning: #F4A261;
+            --danger: #E76F51;
+            --bg-main: #F8FAFB;
+            --bg-card: #FFFFFF;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --border: #E5E7EB;
+            --shadow-sm: 0 1px 3px rgba(45, 95, 126, 0.08);
+            --shadow-md: 0 4px 12px rgba(45, 95, 126, 0.12);
+            --shadow-lg: 0 10px 30px rgba(45, 95, 126, 0.18);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFB 0%, #EDF2F7 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .logo-text h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo-text p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.75rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Navigation */
+        nav {
+            background: var(--bg-card);
+            padding: 0;
+            margin: 2rem 0;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-tabs li {
+            flex: 1;
+        }
+        
+        .nav-tabs button {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tabs button:hover {
+            background: var(--bg-main);
+            color: var(--primary);
+        }
+        
+        .nav-tabs button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: var(--bg-main);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 2rem 0 4rem;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-header {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        input, select, textarea {
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(45, 95, 126, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-main);
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            border-color: var(--primary);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+        
+        tbody tr:hover {
+            background: var(--bg-main);
+        }
+        
+        /* Badges */
+        .badge {
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .badge-success {
+            background: rgba(104, 182, 132, 0.15);
+            color: var(--success);
+        }
+        
+        .badge-warning {
+            background: rgba(244, 162, 97, 0.15);
+            color: var(--warning);
+        }
+        
+        .badge-danger {
+            background: rgba(231, 111, 81, 0.15);
+            color: var(--danger);
+        }
+        
+        .badge-primary {
+            background: rgba(45, 95, 126, 0.15);
+            color: var(--primary);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .empty-state-text {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state-subtext {
+            font-size: 0.95rem;
+            opacity: 0.7;
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-main) 100%);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .stat-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+        
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-card-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* Action Buttons in Table */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Success Message */
+        .success-message {
+            background: rgba(104, 182, 132, 0.15);
+            color: var(--success);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--success);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-wrapper {
+                font-size: 0.875rem;
+            }
+            
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">⚕️</div>
+                    <div class="logo-text">
+                        <h1>MediCore HMS</h1>
+                        <p>Complete Healthcare Management</p>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-patients">0</span>
+                        <span class="stat-label">Patients</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-doctors">0</span>
+                        <span class="stat-label">Doctors</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-appointments">0</span>
+                        <span class="stat-label">Appointments</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul class="nav-tabs">
+                <li><button class="active" data-section="dashboard">📊 Dashboard</button></li>
+                <li><button data-section="patients">👥 Patients</button></li>
+                <li><button data-section="doctors">👨‍⚕️ Doctors</button></li>
+                <li><button data-section="appointments">📅 Appointments</button></li>
+                <li><button data-section="departments">🏥 Departments</button></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2 class="section-title">Dashboard Overview</h2>
+                    <p class="section-subtitle">Welcome to MediCore Hospital Management System</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon">👥</div>
+                        <div class="stat-card-value" id="dash-patients">0</div>
+                        <div class="stat-card-label">Total Patients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">👨‍⚕️</div>
+                        <div class="stat-card-value" id="dash-doctors">0</div>
+                        <div class="stat-card-label">Total Doctors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">📅</div>
+                        <div class="stat-card-value" id="dash-appointments">0</div>
+                        <div class="stat-card-label">Total Appointments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">🏥</div>
+                        <div class="stat-card-value" id="dash-departments">0</div>
+                        <div class="stat-card-label">Departments</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Appointments</h3>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="dashboard-appointments-table">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboard-appointments-body">
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📋</div>
+                                            <div class="empty-state-text">No appointments yet</div>
+                                            <div class="empty-state-subtext">Add your first appointment to get started</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Patients Section -->
+            <section id="patients" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Patient Management</h2>
+                    <p class="section-subtitle">Register and manage patient records</p>
+                </div>
+
+                <div class="success-message" id="patient-success"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Register New Patient</h3>
+                    </div>
+                    <form id="patient-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="patient-name">Full Name *</label>
+                                <input type="text" id="patient-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patient-age">Age *</label>
+                                <input type="number" id="patient-age" required min="0" max="150">
+                            </div>
+                            <div class="form-group">
+                                <label for="patient-gender">Gender *</label>
+                                <select id="patient-gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="patient-phone">Phone Number *</label>
+                                <input type="tel" id="patient-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patient-email">Email</label>
+                                <input type="email" id="patient-email">
+                            </div>
+                            <div class="form-group">
+                                <label for="patient-blood">Blood Group</label>
+                                <select id="patient-blood">
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="patient-address">Address</label>
+                                <textarea id="patient-address"></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="patient-medical-history">Medical History</label>
+                                <textarea id="patient-medical-history" placeholder="Any existing conditions, allergies, etc."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register Patient</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Patients</h3>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Phone</th>
+                                    <th>Blood Group</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patients-table-body">
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">👥</div>
+                                            <div class="empty-state-text">No patients registered</div>
+                                            <div class="empty-state-subtext">Register your first patient above</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Doctors Section -->
+            <section id="doctors" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Doctor Management</h2>
+                    <p class="section-subtitle">Manage medical staff and specialists</p>
+                </div>
+
+                <div class="success-message" id="doctor-success"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add New Doctor</h3>
+                    </div>
+                    <form id="doctor-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="doctor-name">Full Name *</label>
+                                <input type="text" id="doctor-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-specialization">Specialization *</label>
+                                <select id="doctor-specialization" required>
+                                    <option value="">Select Specialization</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Orthopedics">Orthopedics</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="General Medicine">General Medicine</option>
+                                    <option value="Surgery">Surgery</option>
+                                    <option value="Gynecology">Gynecology</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-phone">Phone Number *</label>
+                                <input type="tel" id="doctor-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-email">Email *</label>
+                                <input type="email" id="doctor-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-qualification">Qualification *</label>
+                                <input type="text" id="doctor-qualification" placeholder="e.g., MBBS, MD" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-experience">Experience (years) *</label>
+                                <input type="number" id="doctor-experience" required min="0" max="60">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Doctor</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Doctors</h3>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Specialization</th>
+                                    <th>Qualification</th>
+                                    <th>Experience</th>
+                                    <th>Phone</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doctors-table-body">
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">👨‍⚕️</div>
+                                            <div class="empty-state-text">No doctors registered</div>
+                                            <div class="empty-state-subtext">Add your first doctor above</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appointments Section -->
+            <section id="appointments" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Appointment Scheduling</h2>
+                    <p class="section-subtitle">Book and manage patient appointments</p>
+                </div>
+
+                <div class="success-message" id="appointment-success"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Schedule New Appointment</h3>
+                    </div>
+                    <form id="appointment-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="appointment-patient">Patient *</label>
+                                <select id="appointment-patient" required>
+                                    <option value="">Select Patient</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-doctor">Doctor *</label>
+                                <select id="appointment-doctor" required>
+                                    <option value="">Select Doctor</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-date">Date *</label>
+                                <input type="date" id="appointment-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-time">Time *</label>
+                                <input type="time" id="appointment-time" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-status">Status *</label>
+                                <select id="appointment-status" required>
+                                    <option value="Scheduled">Scheduled</option>
+                                    <option value="Confirmed">Confirmed</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="appointment-reason">Reason for Visit</label>
+                                <textarea id="appointment-reason" placeholder="Brief description of the reason for appointment"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Schedule Appointment</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Appointments</h3>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointments-table-body">
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">📅</div>
+                                            <div class="empty-state-text">No appointments scheduled</div>
+                                            <div class="empty-state-subtext">Schedule your first appointment above</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Departments Section -->
+            <section id="departments" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Department Management</h2>
+                    <p class="section-subtitle">Manage hospital departments and facilities</p>
+                </div>
+
+                <div class="success-message" id="department-success"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add New Department</h3>
+                    </div>
+                    <form id="department-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="department-name">Department Name *</label>
+                                <input type="text" id="department-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="department-head">Department Head</label>
+                                <input type="text" id="department-head">
+                            </div>
+                            <div class="form-group">
+                                <label for="department-beds">Total Beds</label>
+                                <input type="number" id="department-beds" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="department-phone">Contact Number</label>
+                                <input type="tel" id="department-phone">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="department-description">Description</label>
+                                <textarea id="department-description" placeholder="Brief description of the department"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Department</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">All Departments</h3>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Department Name</th>
+                                    <th>Head</th>
+                                    <th>Total Beds</th>
+                                    <th>Contact</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="departments-table-body">
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="empty-state">
+                                            <div class="empty-state-icon">🏥</div>
+                                            <div class="empty-state-text">No departments added</div>
+                                            <div class="empty-state-subtext">Add your first department above</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Data Storage
+        let patients = JSON.parse(localStorage.getItem('hms-patients')) || [];
+        let doctors = JSON.parse(localStorage.getItem('hms-doctors')) || [];
+        let appointments = JSON.parse(localStorage.getItem('hms-appointments')) || [];
+        let departments = JSON.parse(localStorage.getItem('hms-departments')) || [];
+
+        // Navigation
+        document.querySelectorAll('.nav-tabs button').forEach(button => {
+            button.addEventListener('click', () => {
+                const sectionName = button.dataset.section;
+                
+                // Update active states
+                document.querySelectorAll('.nav-tabs button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Show selected section
+                document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+                document.getElementById(sectionName).classList.add('active');
+                
+                // Refresh data when switching sections
+                if (sectionName === 'appointments') {
+                    updateAppointmentSelects();
+                }
+                if (sectionName === 'dashboard') {
+                    updateDashboard();
+                }
+            });
+        });
+
+        // Patient Management
+        document.getElementById('patient-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const patient = {
+                id: 'P' + String(patients.length + 1).padStart(4, '0'),
+                name: document.getElementById('patient-name').value,
+                age: document.getElementById('patient-age').value,
+                gender: document.getElementById('patient-gender').value,
+                phone: document.getElementById('patient-phone').value,
+                email: document.getElementById('patient-email').value,
+                blood: document.getElementById('patient-blood').value,
+                address: document.getElementById('patient-address').value,
+                medicalHistory: document.getElementById('patient-medical-history').value,
+                registeredDate: new Date().toISOString()
+            };
+            
+            patients.push(patient);
+            localStorage.setItem('hms-patients', JSON.stringify(patients));
+            
+            showSuccessMessage('patient-success', 'Patient registered successfully!');
+            document.getElementById('patient-form').reset();
+            renderPatients();
+            updateStats();
+        });
+
+        function renderPatients() {
+            const tbody = document.getElementById('patients-table-body');
+            
+            if (patients.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">👥</div>
+                                <div class="empty-state-text">No patients registered</div>
+                                <div class="empty-state-subtext">Register your first patient above</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = patients.map(patient => `
+                <tr>
+                    <td><strong>${patient.id}</strong></td>
+                    <td>${patient.name}</td>
+                    <td>${patient.age}</td>
+                    <td>${patient.gender}</td>
+                    <td>${patient.phone}</td>
+                    <td>${patient.blood || '-'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger btn-small" onclick="deletePatient('${patient.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deletePatient(id) {
+            if (confirm('Are you sure you want to delete this patient?')) {
+                patients = patients.filter(p => p.id !== id);
+                localStorage.setItem('hms-patients', JSON.stringify(patients));
+                renderPatients();
+                updateStats();
+                updateAppointmentSelects();
+            }
+        }
+
+        // Doctor Management
+        document.getElementById('doctor-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const doctor = {
+                id: 'D' + String(doctors.length + 1).padStart(4, '0'),
+                name: document.getElementById('doctor-name').value,
+                specialization: document.getElementById('doctor-specialization').value,
+                phone: document.getElementById('doctor-phone').value,
+                email: document.getElementById('doctor-email').value,
+                qualification: document.getElementById('doctor-qualification').value,
+                experience: document.getElementById('doctor-experience').value,
+                joinedDate: new Date().toISOString()
+            };
+            
+            doctors.push(doctor);
+            localStorage.setItem('hms-doctors', JSON.stringify(doctors));
+            
+            showSuccessMessage('doctor-success', 'Doctor added successfully!');
+            document.getElementById('doctor-form').reset();
+            renderDoctors();
+            updateStats();
+        });
+
+        function renderDoctors() {
+            const tbody = document.getElementById('doctors-table-body');
+            
+            if (doctors.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">👨‍⚕️</div>
+                                <div class="empty-state-text">No doctors registered</div>
+                                <div class="empty-state-subtext">Add your first doctor above</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = doctors.map(doctor => `
+                <tr>
+                    <td><strong>${doctor.id}</strong></td>
+                    <td>${doctor.name}</td>
+                    <td><span class="badge badge-primary">${doctor.specialization}</span></td>
+                    <td>${doctor.qualification}</td>
+                    <td>${doctor.experience} years</td>
+                    <td>${doctor.phone}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger btn-small" onclick="deleteDoctor('${doctor.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteDoctor(id) {
+            if (confirm('Are you sure you want to delete this doctor?')) {
+                doctors = doctors.filter(d => d.id !== id);
+                localStorage.setItem('hms-doctors', JSON.stringify(doctors));
+                renderDoctors();
+                updateStats();
+                updateAppointmentSelects();
+            }
+        }
+
+        // Appointment Management
+        function updateAppointmentSelects() {
+            const patientSelect = document.getElementById('appointment-patient');
+            const doctorSelect = document.getElementById('appointment-doctor');
+            
+            patientSelect.innerHTML = '<option value="">Select Patient</option>' + 
+                patients.map(p => `<option value="${p.id}">${p.name} (${p.id})</option>`).join('');
+            
+            doctorSelect.innerHTML = '<option value="">Select Doctor</option>' + 
+                doctors.map(d => `<option value="${d.id}">${d.name} - ${d.specialization}</option>`).join('');
+        }
+
+        document.getElementById('appointment-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const patientId = document.getElementById('appointment-patient').value;
+            const doctorId = document.getElementById('appointment-doctor').value;
+            
+            const patient = patients.find(p => p.id === patientId);
+            const doctor = doctors.find(d => d.id === doctorId);
+            
+            const appointment = {
+                id: 'A' + String(appointments.length + 1).padStart(4, '0'),
+                patientId: patientId,
+                patientName: patient.name,
+                doctorId: doctorId,
+                doctorName: doctor.name,
+                date: document.getElementById('appointment-date').value,
+                time: document.getElementById('appointment-time').value,
+                status: document.getElementById('appointment-status').value,
+                reason: document.getElementById('appointment-reason').value,
+                createdDate: new Date().toISOString()
+            };
+            
+            appointments.push(appointment);
+            localStorage.setItem('hms-appointments', JSON.stringify(appointments));
+            
+            showSuccessMessage('appointment-success', 'Appointment scheduled successfully!');
+            document.getElementById('appointment-form').reset();
+            renderAppointments();
+            updateStats();
+        });
+
+        function renderAppointments() {
+            const tbody = document.getElementById('appointments-table-body');
+            
+            if (appointments.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📅</div>
+                                <div class="empty-state-text">No appointments scheduled</div>
+                                <div class="empty-state-subtext">Schedule your first appointment above</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = appointments.map(apt => `
+                <tr>
+                    <td><strong>${apt.id}</strong></td>
+                    <td>${apt.patientName}</td>
+                    <td>${apt.doctorName}</td>
+                    <td>${apt.date}</td>
+                    <td>${apt.time}</td>
+                    <td>${getStatusBadge(apt.status)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger btn-small" onclick="deleteAppointment('${apt.id}')">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteAppointment(id) {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                appointments = appointments.filter(a => a.id !== id);
+                localStorage.setItem('hms-appointments', JSON.stringify(appointments));
+                renderAppointments();
+                updateStats();
+                updateDashboard();
+            }
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'Scheduled': 'badge-warning',
+                'Confirmed': 'badge-primary',
+                'Completed': 'badge-success',
+                'Cancelled': 'badge-danger'
+            };
+            return `<span class="badge ${badges[status]}">${status}</span>`;
+        }
+
+        // Department Management
+        document.getElementById('department-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const department = {
+                id: 'DEPT' + String(departments.length + 1).padStart(3, '0'),
+                name: document.getElementById('department-name').value,
+                head: document.getElementById('department-head').value,
+                beds: document.getElementById('department-beds').value,
+                phone: document.getElementById('department-phone').value,
+                description: document.getElementById('department-description').value,
+                createdDate: new Date().toISOString()
+            };
+            
+            departments.push(department);
+            localStorage.setItem('hms-departments', JSON.stringify(departments));
+            
+            showSuccessMessage('department-success', 'Department added successfully!');
+            document.getElementById('department-form').reset();
+            renderDepartments();
+            updateStats();
+        });
+
+        function renderDepartments() {
+            const tbody = document.getElementById('departments-table-body');
+            
+            if (departments.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🏥</div>
+                                <div class="empty-state-text">No departments added</div>
+                                <div class="empty-state-subtext">Add your first department above</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = departments.map(dept => `
+                <tr>
+                    <td><strong>${dept.id}</strong></td>
+                    <td>${dept.name}</td>
+                    <td>${dept.head || '-'}</td>
+                    <td>${dept.beds || '-'}</td>
+                    <td>${dept.phone || '-'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger btn-small" onclick="deleteDepartment('${dept.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteDepartment(id) {
+            if (confirm('Are you sure you want to delete this department?')) {
+                departments = departments.filter(d => d.id !== id);
+                localStorage.setItem('hms-departments', JSON.stringify(departments));
+                renderDepartments();
+                updateStats();
+            }
+        }
+
+        // Dashboard
+        function updateDashboard() {
+            document.getElementById('dash-patients').textContent = patients.length;
+            document.getElementById('dash-doctors').textContent = doctors.length;
+            document.getElementById('dash-appointments').textContent = appointments.length;
+            document.getElementById('dash-departments').textContent = departments.length;
+            
+            const dashboardBody = document.getElementById('dashboard-appointments-body');
+            const recentAppointments = appointments.slice(-5).reverse();
+            
+            if (recentAppointments.length === 0) {
+                dashboardBody.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📋</div>
+                                <div class="empty-state-text">No appointments yet</div>
+                                <div class="empty-state-subtext">Add your first appointment to get started</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                dashboardBody.innerHTML = recentAppointments.map(apt => `
+                    <tr>
+                        <td>${apt.patientName}</td>
+                        <td>${apt.doctorName}</td>
+                        <td>${apt.date}</td>
+                        <td>${apt.time}</td>
+                        <td>${getStatusBadge(apt.status)}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('total-patients').textContent = patients.length;
+            document.getElementById('total-doctors').textContent = doctors.length;
+            document.getElementById('total-appointments').textContent = appointments.length;
+            updateDashboard();
+        }
+
+        // Success Message
+        function showSuccessMessage(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.classList.add('show');
+            setTimeout(() => {
+                element.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        function init() {
+            renderPatients();
+            renderDoctors();
+            renderAppointments();
+            renderDepartments();
+            updateAppointmentSelects();
+            updateStats();
+            updateDashboard();
+            
+            // Set minimum date for appointments to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointment-date').setAttribute('min', today);
+        }
+
+        // Run initialization
+        init();
+    </script>
+</body>
+</html>
